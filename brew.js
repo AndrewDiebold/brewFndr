@@ -12,8 +12,40 @@ const getLocation = () => {
 const getLatLong = (position) => {
     let currentLat = position.coords.latitude;
     let currentLong = position.coords.longitude;
-    console.log(currentLat , currentLong);
-    console.log(distance(currentLat, currentLong, 43.09489645, -89.5165797754161, "M"));
+
+    readData("/brewFndr/data.json", function(text){
+        var data = JSON.parse(text);
+
+        dataNumber = 0;
+        let list = [];
+
+        for(i = 0; i < data.length; i++) {
+         
+            distanceFrom = distance(currentLat, currentLong, data[dataNumber].latitude, data[dataNumber].longitude, "M");
+
+            if (distanceFrom < 15) {
+            
+                list.push(data[dataNumber])
+
+                console.log(list[0]);
+                console.log("miles = " + distanceFrom);
+                
+
+                
+                
+            }
+
+            dataNumber++;
+          }
+
+
+    });
+
+
+
+
+
+
 }
 
 
@@ -55,11 +87,4 @@ const readData = (file, callback) => {
     rawFile.send(null);
 }
 
-//usage:
-readData("/breweries/data.json", function(text){
-    var data = JSON.parse(text);
-    console.log(data[0]);
-    console.log(data[0].latitude);
-    console.log(data[0].longitude);
-});
 
