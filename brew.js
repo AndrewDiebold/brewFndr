@@ -25,7 +25,7 @@ const getLatLong = (position) => {
 
             if (distanceFrom < 15) {
             
-                list.push(data[dataNumber])
+                list.push(data[dataNumber] + distanceFrom)
 
                 console.log(list[0]);
                 console.log("miles = " + distanceFrom);
