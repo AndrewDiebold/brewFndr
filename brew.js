@@ -59,5 +59,7 @@ const readData = (file, callback) => {
 readData("/breweries/data.json", function(text){
     var data = JSON.parse(text);
     console.log(data[0]);
+    console.log(data[0].latitude);
+    console.log(data[0].longitude);
 });
 
