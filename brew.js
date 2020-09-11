@@ -18,24 +18,44 @@ const getLatLong = (position) => {
 
         dataNumber = 0;
         let list = [];
+        
+        let distanceFrom;
 
         for(i = 0; i < data.length; i++) {
          
             distanceFrom = distance(currentLat, currentLong, data[dataNumber].latitude, data[dataNumber].longitude, "M");
-
-            if (distanceFrom < 15) {
             
-                list.push(data[dataNumber])
-
-                console.log("miles = " + distanceFrom);
- 
+            if (distanceFrom < 10) {
+                
+                list.push({"id" : data[dataNumber].id,
+                    "name" : data[dataNumber].name,
+                    "street" : data[dataNumber].street,
+                    "city" : data[dataNumber].city,
+                    "state" : data[dataNumber].state,
+                    "postal_code" : data[dataNumber].postal_code,
+                    "country" : data[dataNumber].country,
+                    "phone" : data[dataNumber].phone,
+                    "website_url" : data[dataNumber].website_url,
+                    "latitude" : data[dataNumber].latitude,
+                    "longitude" : data[dataNumber].longitude,
+                    "distanceFrom" : distanceFrom});
+                
+                
+                //console.log(data[dataNumber]);
+                
+                //console.log("miles = " + distanceFrom + " " + data[dataNumber].id);
             }
             
-
             dataNumber++;
           }
-          console.log(list);
-
+          //console.log(list);
+          console.log(list.sort(GetSortOrder("distanceFrom")));
+          
+          
+          
+          
+         
+          
 
     });
 
@@ -44,6 +64,17 @@ const getLatLong = (position) => {
 
 
 
+}
+
+function GetSortOrder(prop) {    
+    return function(a, b) {    
+        if (a[prop] > b[prop]) {    
+            return 1;    
+        } else if (a[prop] < b[prop]) {    
+            return -1;    
+        }    
+        return 0;    
+    }    
 }
 
 
