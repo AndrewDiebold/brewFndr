@@ -64,19 +64,27 @@ const getLatLong = (position) => {
             let li1 = document.createElement("li");
             let li2 = document.createElement("li");
             let li3 = document.createElement("li");
+
+            let a = document.createElement("a");
+            a.href = (list[i].website_url)
+ 
             let name = document.createTextNode(list[i].name);
             let city = document.createTextNode(list[i].city);
-            let website_url = document.createTextNode("<a herf=" + list[i].website_url + ">" + list[i].website_url + "</a>");
-            let distanceFrom = document.createTextNode(list[i].distanceFrom);
-
+            let website_url = document.createTextNode(list[i].website_url);
+            let distanceFrom = document.createTextNode(Math.round(list[i].distanceFrom*100)/100);
             
+
             ul.appendChild(li);
             ul.appendChild(li1);
             ul.appendChild(li2);
             ul.appendChild(li3);
+
+            li2.appendChild(a);
+
+
             li.appendChild(name);
             li1.appendChild(city);
-            li2.appendChild(website_url);
+            a.appendChild(website_url);
             li3.appendChild(distanceFrom);
 
 
