@@ -1,5 +1,15 @@
+const init = () => {
 
+    let searchButton = document.querySelector("#searchButton");
+    searchButton.addEventListener("click", clearDiv);
+    searchButton.addEventListener("click", getLocation);
 
+}
+
+const clearDiv = () => {
+    let div = document.getElementById("results");
+    div.innerHTML = "";
+}
 
 const getLocation = () => {
     if (navigator.geolocation) {
@@ -14,18 +24,18 @@ const getLatLong = (position) => {
     let currentLong = position.coords.longitude;
 
     readData("/brewFndr/data.json", function(text){
-        var data = JSON.parse(text);
-
-        dataNumber = 0;
+        let data = JSON.parse(text);
+        let dataNumber = 0;
         let list = [];
-        
         let distanceFrom;
+
+        let distanceRadius = document.getElementById("distanceRadius").value;
 
         for(i = 0; i < data.length; i++) {
          
             distanceFrom = distance(currentLat, currentLong, data[dataNumber].latitude, data[dataNumber].longitude, "M");
             
-            if (distanceFrom < 10) {
+            if (distanceFrom < distanceRadius) {
                 
                 list.push({"id" : data[dataNumber].id,
                     "name" : data[dataNumber].name,
@@ -38,35 +48,45 @@ const getLatLong = (position) => {
                     "website_url" : data[dataNumber].website_url,
                     "latitude" : data[dataNumber].latitude,
                     "longitude" : data[dataNumber].longitude,
-                    "distanceFrom" : distanceFrom});
-                
-                
-                //console.log(data[dataNumber]);
-                
-                //console.log("miles = " + distanceFrom + " " + data[dataNumber].id);
+                    "distanceFrom" : distanceFrom}); 
             }
-            
             dataNumber++;
-          }
-          //console.log(list);
-          console.log(list.sort(GetSortOrder("distanceFrom")));
-          
-          
-          
-          
-         
-          
+        }
+        console.log(list.sort(GetSortOrder("distanceFrom")));
 
+        
+        
+        for(let i = 0; i < list.length; i++) {
+           
+            
+            let ul = document.createElement("ul");
+            let li = document.createElement("li");
+            let li1 = document.createElement("li");
+            let li2 = document.createElement("li");
+            let li3 = document.createElement("li");
+            let name = document.createTextNode(list[i].name);
+            let city = document.createTextNode(list[i].city);
+            let website_url = document.createTextNode("<a herf=" + list[i].website_url + ">" + list[i].website_url + "</a>");
+            let distanceFrom = document.createTextNode(list[i].distanceFrom);
+
+            
+            ul.appendChild(li);
+            ul.appendChild(li1);
+            ul.appendChild(li2);
+            ul.appendChild(li3);
+            li.appendChild(name);
+            li1.appendChild(city);
+            li2.appendChild(website_url);
+            li3.appendChild(distanceFrom);
+
+
+            document.getElementById("results").appendChild(ul);
+            
+         };
     });
-
-
-
-
-
-
 }
 
-function GetSortOrder(prop) {    
+const GetSortOrder = (prop) => {    
     return function(a, b) {    
         if (a[prop] > b[prop]) {    
             return 1;    
@@ -117,3 +137,4 @@ const readData = (file, callback) => {
 }
 
 
+  window.onload = init;
