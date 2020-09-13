@@ -36,6 +36,51 @@ const getLatLong = (position) => {
             distanceFrom = distance(currentLat, currentLong, data[dataNumber].latitude, data[dataNumber].longitude, "M");
             
             if (distanceFrom < distanceRadius) {
+
+                if (data[dataNumber].latitude == "") {
+                    console.log("no Latitude");
+
+                    let zipCode = data[dataNumber].postal_code;
+                    const getLatAndLong = () => {
+  
+                      
+                        let api = "https://public.opendatasoft.com/api/records/1.0/search/?format=json&dataset=us-zip-code-latitude-and-longitude&q=";
+                        let url = api + zipCode;
+                        let xhr = new XMLHttpRequest();
+                      
+                        xhr.open("get", url);
+                      
+                        xhr.onreadystatechange = () => {
+                          if(xhr.readyState == 4) {
+                            let data = JSON.parse(xhr.responseText);
+                      
+                            if (data.postalCodes[0] == null) {
+                              alert("Zip code entered does not exist");
+                              return false;
+                            }
+                      
+                            let lat = data.postalCodes[0].fields.latitude;
+                            let lng = data.postalCodes[0].fields.longitude;
+                            
+                            
+                          
+                            
+                      
+                            console.log(lat);
+                            
+                      
+                          }
+                        }
+                        xhr.send(null);
+                        }
+                      
+                    
+                }
+                let postalCode = data[dataNumber].postal_code;
+                let Dig = postalCode.substring(0,5);
+                console.log(Dig);
+                
+                
                 
                 list.push({"id" : data[dataNumber].id,
                     "name" : data[dataNumber].name,
@@ -54,38 +99,47 @@ const getLatLong = (position) => {
         }
         console.log(list.sort(GetSortOrder("distanceFrom")));
 
+
         
         
         for(let i = 0; i < list.length; i++) {
            
             
             let ul = document.createElement("ul");
-            let li = document.createElement("li");
-            let li1 = document.createElement("li");
-            let li2 = document.createElement("li");
-            let li3 = document.createElement("li");
+            let breweryName_li = document.createElement("li");
+            let cityState_li = document.createElement("li");
+            
+            let websiteLink_li = document.createElement("li");
+            let distance_li = document.createElement("li");
 
-            let a = document.createElement("a");
-            a.href = (list[i].website_url)
+            let websiteLink = document.createElement("a");
+            websiteLink.href = (list[i].website_url)
+            websiteLink.target = "_blank"
+
+            let miles = document.createTextNode(" miles");
  
             let name = document.createTextNode(list[i].name);
-            let city = document.createTextNode(list[i].city);
+            let city = document.createTextNode(list[i].city + ",");
+            let state = document.createTextNode(" " + list[i].state);
             let website_url = document.createTextNode(list[i].website_url);
             let distanceFrom = document.createTextNode(Math.round(list[i].distanceFrom*100)/100);
             
 
-            ul.appendChild(li);
-            ul.appendChild(li1);
-            ul.appendChild(li2);
-            ul.appendChild(li3);
+            ul.appendChild(breweryName_li);
+            ul.appendChild(cityState_li);
+            
+            ul.appendChild(websiteLink_li);
+            ul.appendChild(distance_li);
 
-            li2.appendChild(a);
+            websiteLink_li.appendChild(websiteLink);
 
 
-            li.appendChild(name);
-            li1.appendChild(city);
-            a.appendChild(website_url);
-            li3.appendChild(distanceFrom);
+            breweryName_li.appendChild(name);
+            cityState_li.appendChild(city);
+            cityState_li.appendChild(state);
+            websiteLink.appendChild(website_url);
+            distance_li.appendChild(distanceFrom);
+            distance_li.appendChild(miles);
 
 
             document.getElementById("results").appendChild(ul);
