@@ -38,12 +38,12 @@ const getLatLong = (position) => {
             if (distanceFrom < distanceRadius) {
 
                 if (data[dataNumber].latitude == "") {
-                    console.log("no Latitude");
+                    //console.log("no Latitude");
                     let zipCode = data[dataNumber].postal_code;
                     let fiveDigitZip = zipCode.substring(5,0);
-                    console.log(fiveDigitZip);
+                    //console.log(fiveDigitZip);
 
-                    
+
 
                 }
                 
