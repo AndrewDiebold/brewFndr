@@ -39,46 +39,14 @@ const getLatLong = (position) => {
 
                 if (data[dataNumber].latitude == "") {
                     console.log("no Latitude");
-
                     let zipCode = data[dataNumber].postal_code;
-                    const getLatAndLong = () => {
-  
-                      
-                        let api = "https://public.opendatasoft.com/api/records/1.0/search/?format=json&dataset=us-zip-code-latitude-and-longitude&q=";
-                        let url = api + zipCode;
-                        let xhr = new XMLHttpRequest();
-                      
-                        xhr.open("get", url);
-                      
-                        xhr.onreadystatechange = () => {
-                          if(xhr.readyState == 4) {
-                            let data = JSON.parse(xhr.responseText);
-                      
-                            if (data.postalCodes[0] == null) {
-                              alert("Zip code entered does not exist");
-                              return false;
-                            }
-                      
-                            let lat = data.postalCodes[0].fields.latitude;
-                            let lng = data.postalCodes[0].fields.longitude;
-                            
-                            
-                          
-                            
-                      
-                            console.log(lat);
-                            
-                      
-                          }
-                        }
-                        xhr.send(null);
-                        }
-                      
+                    let fiveDigitZip = zipCode.substring(5,0);
+                    console.log(fiveDigitZip);
+
                     
+
                 }
-                let postalCode = data[dataNumber].postal_code;
-                let Dig = postalCode.substring(0,5);
-                console.log(Dig);
+                
                 
                 
                 
