@@ -12,16 +12,31 @@ const clearDiv = () => {
 }
 
 const getLocation = () => {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(getLatLong);
-    } else { 
-        x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-}
+  
+    let api = "https://www.googleapis.com/geolocation/v1/geolocate?key=";
+    let key = "";
+  
+    let url = api + key;
+    let xhr = new XMLHttpRequest();
+  
+    xhr.open("post", url);
+  
+    xhr.onreadystatechange = () => {
+      if(xhr.readyState == 4) {
+        let data = JSON.parse(xhr.responseText);
+        
 
-const getLatLong = (position) => {
-    let currentLat = position.coords.latitude;
-    let currentLong = position.coords.longitude;
+        getLatLong(data.location.lat, data.location.lng)
+      }
+    }
+    xhr.send(null);
+  }
+
+
+
+const getLatLong = (lat, lng) => {
+    let currentLat = lat;
+    let currentLong = lng;
 
     readData("/brewFndr/data.json", function(text){
         let data = JSON.parse(text);
@@ -37,18 +52,6 @@ const getLatLong = (position) => {
             
             if (distanceFrom < distanceRadius) {
 
-                if (data[dataNumber].latitude == "") {
-                    //console.log("no Latitude");
-                    let zipCode = data[dataNumber].postal_code;
-                    let fiveDigitZip = zipCode.substring(5,0);
-                    //console.log(fiveDigitZip);
-
-
-
-                }
-                
-                
-                
                 
                 list.push({"id" : data[dataNumber].id,
                     "name" : data[dataNumber].name,
@@ -65,7 +68,7 @@ const getLatLong = (position) => {
             }
             dataNumber++;
         }
-        console.log(list.sort(GetSortOrder("distanceFrom")));
+        list.sort(GetSortOrder("distanceFrom"));
 
 
         
@@ -109,7 +112,9 @@ const getLatLong = (position) => {
             distance_li.appendChild(distanceFrom);
             distance_li.appendChild(miles);
 
-
+            
+            
+            
             document.getElementById("results").appendChild(ul);
             
          };

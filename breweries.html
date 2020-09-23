@@ -8,20 +8,71 @@
     <script src="brew.js"></script>
 
 <style>
+    body{
+        background-color: lightgray;
+    }
+    p{
+        margin: 0;
+    }
+    
     ul{
         list-style-type: none;
     }
+    .inputContainer{
+        display: grid;
+        
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+    }
+    .input{
+        grid-row: 2;
+        grid-column: 2 / 6;
+        text-align: center;
+    }
+
+    .text{
+        grid-column: span 3;
+        grid-column: 2 / 6;
+        text-align: center;
+    }
+
+    .resultsContainer{
+        
+        width: 45vw;
+        height: 80vh;
+        overflow: scroll;
+        border: black solid;
+        margin: auto;
+        margin-top: 10px;
+        background-color: white;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .resultsContainer {
+            width: 90vw;
+        }
+    }
+    
 </style>
 
 
 
 </head>
 <body>
-
-    <input type="number" id="distanceRadius" name="distanceRadius"> </input>
-    <button id="searchButton" >Search</button>
-
- <div id="results"></div>
     
+    <div class="inputContainer">
+        <p class="text">Enter a distance in miles to find nearby breweries</p>
+        <div class="input">
+            <input type="text" id="distanceRadius" name="distanceRadius" placeholder="Enter a Distance"></input>
+            <button id="searchButton" >Search</button>
+        </div>
+    </div>
+
+
+
+ <div class="resultsContainer" id="results"></div>
+    
+
+
 </body>
 </html>
